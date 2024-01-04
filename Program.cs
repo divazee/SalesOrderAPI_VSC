@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProductAPIVS.Container;
 using SalesOrderAPI.Models;
@@ -18,6 +19,10 @@ builder.Services.AddDbContext<SalesDbContext>(options =>
 });
 
 builder.Services.AddTransient<ICustomerContainer, CustomerContainer>();
+
+var automapper = new MapperConfiguration(item => item.AddProfile(new MappingProfile()));
+IMapper mapper = automapper.CreateMapper();
+builder.Services.AddSingleton(mapper);
 
 var app = builder.Build();
 
