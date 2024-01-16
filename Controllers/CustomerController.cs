@@ -22,4 +22,10 @@ public class CustomerController : ControllerBase
     {
         return await _customerContainer.GetAllCustomer();
     }
+
+    [HttpGet("GetByCode")]
+    public async Task<CustomerEntity> GetByCode(string code)
+    {
+        return await _customerContainer.GetByCode(code);
+    }
 }

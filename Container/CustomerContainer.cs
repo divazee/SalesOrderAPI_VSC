@@ -24,4 +24,14 @@ public class CustomerContainer : ICustomerContainer
         }
         return new List<CustomerEntity>();
     }
+
+    public async Task<CustomerEntity> GetByCode(string code)
+    {
+        var customerData = await _salesDbContext.TblCustomers.FirstOrDefaultAsync(item => item.Code == code);
+        if (customerData != null)
+        {
+            return _mapper.Map<TblCustomer, CustomerEntity>(customerData);
+        }
+        return new CustomerEntity();
+    }
 }
