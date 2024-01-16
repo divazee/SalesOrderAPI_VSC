@@ -7,5 +7,8 @@ public class MappingProfile : Profile
     {
         CreateMap<TblCustomer, CustomerEntity>()
             .ForMember(item => item.StatusName, item => item.MapFrom(item => item.IsActive == true ? "Active" : "InActive"));
+
+        CreateMap<TblSalesHeader, InvoiceHeader>().ReverseMap();
+        CreateMap<TblSalesProductInfo, InvoiceDetail>().ReverseMap();
     }
 }

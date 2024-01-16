@@ -19,6 +19,7 @@ builder.Services.AddDbContext<SalesDbContext>(options =>
 });
 
 builder.Services.AddTransient<ICustomerContainer, CustomerContainer>();
+builder.Services.AddTransient<IInvoiceContainer, InvoiceContainer>();
 
 var automapper = new MapperConfiguration(item => item.AddProfile(new MappingProfile()));
 IMapper mapper = automapper.CreateMapper();
