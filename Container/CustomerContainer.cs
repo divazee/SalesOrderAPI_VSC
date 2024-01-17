@@ -27,6 +27,7 @@ public class CustomerContainer : ICustomerContainer
 
     public async Task<CustomerEntity> GetByCode(string code)
     {
+        // int c = Convert.ToInt32(code); //to catch an error
         var customerData = await _salesDbContext.TblCustomers.FirstOrDefaultAsync(item => item.Code == code);
         if (customerData != null)
         {
