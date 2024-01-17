@@ -9,8 +9,7 @@ namespace SalesOrderAPI.Controllers;
 [Route("[controller]")]
 public class ProductController : ControllerBase
 {
-
-    public readonly IProductContainer _productContainer;
+    private readonly IProductContainer _productContainer;
 
     public ProductController(IProductContainer productContainer)
     {
