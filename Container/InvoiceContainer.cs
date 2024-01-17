@@ -6,10 +6,12 @@ public class InvoiceContainer : IInvoiceContainer
 {
     private readonly SalesDbContext _salesDbContext;
     private readonly IMapper _mapper;
-    public InvoiceContainer(SalesDbContext salesDbContext, IMapper mapper)
+    private readonly ILogger<InvoiceContainer> _logger;
+    public InvoiceContainer(SalesDbContext salesDbContext, IMapper mapper, ILogger<InvoiceContainer> logger)
     {
         _salesDbContext = salesDbContext;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task<List<InvoiceHeader>> GetAllInvoiceHeader()
@@ -55,7 +57,8 @@ public class InvoiceContainer : IInvoiceContainer
                 if (invoiceEntity.header != null)
                     result = await SaveHeader(invoiceEntity.header);
 
-                if (!string.IsNullOrEmpty(result) && invoiceEntity.details != null && invoiceEntity.details.Count > 0)
+                // if (!string.IsNullOrEmpty(result) && invoiceEntity.details != null && invoiceEntity.header != null && invoiceEntity.header.CreateUser != null && invoiceEntity.details.Count > 0)
+                if (!string.IsNullOrEmpty(result) && invoiceEntity.details?.Any() == true && invoiceEntity.header?.CreateUser != null) //more concise than the commented line above
                 {
                     invoiceEntity.details.ForEach(item =>
                     {
@@ -74,14 +77,14 @@ public class InvoiceContainer : IInvoiceContainer
                     {
                         await dbTransaction.RollbackAsync();
                         response.Result = "fail";
-                        response.KeyValue = "here";
+                        response.KeyValue = result + " - 01";
                         // response.KeyValue = string.Empty;
                     }
                 }
                 else
                 {
                     response.Result = "fail";
-                    response.KeyValue = result + "..string.Empty";
+                    response.KeyValue = result + " - 02";
                 }
             }
         }
@@ -131,7 +134,8 @@ public class InvoiceContainer : IInvoiceContainer
         }
         catch (Exception ex)
         {
-            throw ex;
+            _logger.LogInformation("An exception in {@method}... Message: {@message}", "SaveHeader()", ex.Message);
+            // throw ex;
         }
 
         return results;
@@ -141,6 +145,7 @@ public class InvoiceContainer : IInvoiceContainer
     {
         try
         {
+            // int c = Convert.ToInt32("test catch block or error"); //for error to occur
             TblSalesProductInfo _detail = _mapper.Map<InvoiceDetail, TblSalesProductInfo>(invoiceDetail);
             _detail.CreateDate = DateTime.Now;
             _detail.CreateUser = User;
@@ -149,7 +154,9 @@ public class InvoiceContainer : IInvoiceContainer
         }
         catch (Exception ex)
         {
-            throw ex;
+            _logger.LogInformation("An exception in {@method}... Message: {@message}", "SaveDetail()", ex.Message);
+            // throw;
+            return false;
         }
 
     }
@@ -176,7 +183,9 @@ public class InvoiceContainer : IInvoiceContainer
         }
         catch (Exception ex)
         {
-            throw ex;
+            _logger.LogInformation("An exception in {@method}... Message: {@message}", "Remove()", ex.Message);
+            // throw;
+            return new ResponseType() { Result = "false", KeyValue = invoiceno };
         }
     }
 }
