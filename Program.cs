@@ -44,14 +44,23 @@ var _logger = new LoggerConfiguration()
 builder.Logging.AddSerilog(_logger);
 
 
+/*
+// to test if the appsettings.json file is being read
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.File("log.txt")
+    .CreateLogger();
+var connectionString23 = builder.Configuration.GetConnectionString("connection");
+Log.Information($"Connection string is..................: {connectionString23}");
+*/
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// if (app.Environment.IsDevelopment())
+// {
+app.UseSwagger();
+app.UseSwaggerUI();
+// }
 
 app.UseHttpsRedirection();
 
