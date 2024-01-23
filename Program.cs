@@ -62,7 +62,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 // }
 
-app.UseStaticFiles();
+app.UseStaticFiles(); //allow access of image or files
 
 app.UseHttpsRedirection();
 
