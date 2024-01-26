@@ -22,10 +22,22 @@ builder.Services.AddDbContext<SalesDbContext>(options =>
 builder.Services.AddTransient<ICustomerContainer, CustomerContainer>();
 builder.Services.AddTransient<IInvoiceContainer, InvoiceContainer>();
 builder.Services.AddTransient<IProductContainer, ProductContainer>();
+builder.Services.AddTransient<IMasterContainer, MasterContainer>();
 
 var automapper = new MapperConfiguration(item => item.AddProfile(new MappingProfile()));
 IMapper mapper = automapper.CreateMapper();
 builder.Services.AddSingleton(mapper);
+
+// CORS
+// builder.Services.AddCors(options =>
+// {
+//     options.AddDefaultPolicy(policy =>
+//     {
+//         policy.WithOrigins("http://localhost:4200");
+//         policy.AllowAnyHeader();
+//         policy.AllowAnyOrigin();
+//     });
+// });
 
 // individual logging
 // Log.Logger = new LoggerConfiguration().WriteTo.File("/Users/ahumibee/Desktop/Logs/ApiLog-.log", rollingInterval: RollingInterval.Day).CreateLogger();

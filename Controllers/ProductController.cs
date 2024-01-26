@@ -100,12 +100,17 @@ public class ProductController : ControllerBase
             }
             return new ResponseType { Result = "pass", KeyValue = code };
         }
-        catch (System.Exception ex)
+        catch (System.Exception)
         {
             throw;
         }
     }
 
+    [HttpPost("SaveProduct")]
+    public async Task<ResponseType> SaveProduct([FromBody] ProductEntity _product)
+    {
+        return await _productContainer.SaveProduct(_product);
+    }
 
     [NonAction]
     private string GetFilePath(string productCode)
