@@ -19,7 +19,11 @@ public partial class SalesDbContext : DbContext
 
     public virtual DbSet<TblCustomer> TblCustomers { get; set; }
 
+    public virtual DbSet<TblMastervariant> TblMastervariants { get; set; }
+
     public virtual DbSet<TblProduct> TblProducts { get; set; }
+
+    public virtual DbSet<TblProductvariant> TblProductvariants { get; set; }
 
     public virtual DbSet<TblRole> TblRoles { get; set; }
 
@@ -56,6 +60,21 @@ public partial class SalesDbContext : DbContext
             entity.Property(e => e.Phoneno).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<TblMastervariant>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__tbl_mast__3214EC27EE019AD7");
+
+            entity.ToTable("tbl_mastervariant");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.VariantName)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.VariantType)
+                .HasMaxLength(1)
+                .IsUnicode(false);
+        });
+
         modelBuilder.Entity<TblProduct>(entity =>
         {
             entity.HasKey(e => e.Code);
@@ -69,6 +88,20 @@ public partial class SalesDbContext : DbContext
                 .HasMaxLength(250)
                 .IsUnicode(false);
             entity.Property(e => e.Price).HasColumnType("decimal(18, 3)");
+        });
+
+        modelBuilder.Entity<TblProductvariant>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__tbl_prod__3214EC275BAF894C");
+
+            entity.ToTable("tbl_productvariant");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.ProductCode)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.Remarks).HasMaxLength(100);
         });
 
         modelBuilder.Entity<TblRole>(entity =>
